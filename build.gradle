@@ -37,6 +37,10 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+	implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+	implementation 'commons-codec:commons-codec:1.15'
 }
 
 tasks.named('test') {
