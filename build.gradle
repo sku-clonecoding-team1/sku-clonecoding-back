@@ -30,8 +30,9 @@ dependencies {
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation("com.squareup.okhttp3:okhttp:4.12.0")
+	implementation "com.squareup.okhttp3:okhttp:4.12.0"
 }
 
 tasks.named('test') {
