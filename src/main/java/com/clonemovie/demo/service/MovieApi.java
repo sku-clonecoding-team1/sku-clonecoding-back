@@ -1,25 +1,20 @@
 package com.clonemovie.demo.service;
 
-import com.clonemovie.demo.domain.Movie;
 import com.clonemovie.demo.repository.MovieRepository;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @Service
 @RequiredArgsConstructor
 public class MovieApi {
-    private final OkHttpClient client = new OkHttpClient();
     private final MovieRepository movieRepository;
+    private final OkHttpClient client = new OkHttpClient();
 
     public String fetchNowPlayingMovies() throws IOException {
         Request request = new Request.Builder()
@@ -35,32 +30,24 @@ public class MovieApi {
             }
 
             String responseBody = response.body().string();
-            ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode results = objectMapper.readTree(responseBody).get("results");
 
-            List<Movie> movies = new ArrayList<>();
-
-            for (JsonNode node : results) {
-                Movie movie = new Movie();
-                movie.setId(node.get("id").asLong());
-                movie.setTitle(node.get("title").asText());
-                movie.setOverview(node.get("overview").asText());
-                movie.setPoster_path(node.get("poster_path").asText());
-                movie.setAdult(node.get("adult").asBoolean());
-                movie.setOriginal_title(node.get("original_title").asText());
-                movie.setRelease_date(LocalDate.parse(node.get("release_date").asText()));
-                movie.setVote_average(node.get("vote_average").asDouble());
-
-                List<Long> genreIds = new ArrayList<>();
-                for (JsonNode genre : node.get("genre_ids")) {
-                    genreIds.add(genre.get("id").asLong());
-                }
-                movie.setGenre_ids(genreIds);
-
-                movies.add(movie);
-            }
-            movieRepository.saveAll(movies);
-            return "Movies successfully saved";
+            String hashedResponse = hashWithSHA256(responseBody);
+            return hashedResponse;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
         }
+    }
+
+    private String hashWithSHA256(String data) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] hash = digest.digest(data.getBytes());
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : hash) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) hexString.append('0');
+            hexString.append(hex);
+        }
+
+        return hexString.toString();
     }
 }
