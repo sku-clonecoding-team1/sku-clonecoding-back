@@ -16,6 +16,7 @@ public class Movie {
     private Long id;
     private boolean adult;
     private String originalTitle;
+    @Column(length = 1000)
     private String overview;
     private double popularity;
     private String posterPath;

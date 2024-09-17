@@ -24,9 +24,6 @@ public class ApiController {
         }
     }
 
-    @PostMapping("/now-playing")
-    public ResponseEntity<String> getNowPlayingMovies() throws IOException {
-       String response = movieApi.fetchNowPlayingMovies();
-       return ResponseEntity.ok(response);
-    }
+
+
 }
