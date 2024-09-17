@@ -14,16 +14,4 @@ import java.io.IOException;
 public class ApiController {
     private final MovieApi movieApi;
 
-    @GetMapping("/movie-list")
-    public ResponseEntity<String> getMovies() {
-        try {
-            String movieResponse = movieApi.fetchNowPlayingMovies();
-            return ResponseEntity.ok(movieResponse);
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body("오류가 났습니다.");
-        }
-    }
-
-
-
 }

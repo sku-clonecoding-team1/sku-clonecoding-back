@@ -2,16 +2,16 @@ package com.clonemovie.demo.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
-@NoArgsConstructor
-public class MovieGenres {
-    @Id @GeneratedValue
+public class Genres {
+    @Id
+    @Setter
     private Long id;
-    private Long movie_id;
-    private Long genre_id;
+    private String name;
 }
