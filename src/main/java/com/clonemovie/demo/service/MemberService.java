@@ -38,6 +38,6 @@ public class MemberService {
         if (member != null && member.checkPassword(password)) {
             return jwtUtility.generateToken(member.getUserId());
         }
-        return null;        // 예외처리
+        return null;        // 예외처리 해야함
     }
 }

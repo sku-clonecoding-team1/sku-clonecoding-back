@@ -5,12 +5,21 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @Getter
 @Entity
 @Setter
 public class Movie {
-    @Id @GeneratedValue
+    @Id
     private Long id;
-    private String hash;
+    private boolean adult;
+    private String originalTitle;
+    private String overview;
+    private double popularity;
+    private String posterPath;
+    private LocalDate releaseDate;
+    private String title;
+    private double vote_average;
 }
