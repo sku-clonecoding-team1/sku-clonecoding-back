@@ -13,6 +13,10 @@ spring:
         format_sql: true
         jdbc:
           time_zone: Asia/Seoul
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
 
 #    database-platform:
 #    Upload file Setting
