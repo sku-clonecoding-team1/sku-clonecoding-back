@@ -1,5 +1,4 @@
 spring:
-
   datasource:
     url: jdbc:mysql://localhost:3306/moviecgv?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
@@ -8,14 +7,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-#    database-platform:
 
 logging:
   level:
     org.springframework.security: DEBUG
 
+tmdb:
+  api-key: "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMGNhNGQyMmVjODk5ZTJhMTZjMTcyY2JkZDlmMDg4MyIsIm5iZiI6MTcyNTUyNzk2Mi41MjU0MDMsInN1YiI6IjY2OGYzNjNjNGE4NTIyMGFhZWU2ZTQzMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AndZ865MqPQ2buHuQlIz9WbX6qv4NrYCObJA9-Ntvm8"
