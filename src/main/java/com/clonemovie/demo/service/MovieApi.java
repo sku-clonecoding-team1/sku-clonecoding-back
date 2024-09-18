@@ -27,11 +27,13 @@ import java.util.Set;
 public class MovieApi {
     private final MovieRepository movieRepository;
     private final GenresRepository genresRepository;
+    private final GenresApi genresApi;
     private final OkHttpClient client = new OkHttpClient();
 
     @PostConstruct
     public void initialize() {
         try {
+            genresApi.fetchAllGenres();
             fetchNowPlayingMovies();
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,16 +89,11 @@ public class MovieApi {
                                     for (JsonNode genreIdNode : genreIdsNode) {
                                         Long genreId = genreIdNode.asLong();
                                         Genres genre = genresRepository.findById(genreId)
-                                                .orElseGet(() -> {
-                                                    Genres newGenre = new Genres();
-                                                    newGenre.setId(genreId);
-                                                    return genresRepository.save(newGenre);
-                                                });
+                                                        .orElseThrow(() -> new RuntimeException("Genre " + genreId + " not found"));
                                         genres.add(genre);
                                     }
                                 }
                                 movie.setGenres(genres);
-
                                 movies.add(movie);
                             }
                         }

@@ -9,9 +9,9 @@ import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 public class Genres {
     @Id
-    @Setter
     private Long id;
     private String name;
 }
