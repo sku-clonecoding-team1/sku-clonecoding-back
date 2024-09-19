@@ -40,7 +40,7 @@ public class MovieService {
                 .addPathSegment("3")
                 .addPathSegment("movie")
                 .addPathSegment("now_playing")
-                .addQueryParameter("language", "en-US")
+                .addQueryParameter("language", "ko")
                 .addQueryParameter("page", String.valueOf(page))
                 .addQueryParameter("api_key", tmdbProperties.getApiKey())
                 .build();
@@ -123,7 +123,7 @@ public class MovieService {
                 .addPathSegment("3")
                 .addPathSegment("movie")
                 .addPathSegment(movieId.toString())
-                .addQueryParameter("language", "en-US")
+                .addQueryParameter("language", "ko")
                 .addQueryParameter("api_key", tmdbProperties.getApiKey())
                 .build();
 

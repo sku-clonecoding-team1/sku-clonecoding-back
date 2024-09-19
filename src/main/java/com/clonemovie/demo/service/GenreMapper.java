@@ -8,25 +8,25 @@ public class GenreMapper {
     private static final Map<Integer, String> genreMap = new HashMap<>();
 
     static {
-        genreMap.put(28, "Action");
-        genreMap.put(12, "Adventure");
-        genreMap.put(16, "Animation");
-        genreMap.put(35, "Comedy");
-        genreMap.put(80, "Crime");
-        genreMap.put(99, "Documentary");
-        genreMap.put(18, "Drama");
-        genreMap.put(10751, "Family");
-        genreMap.put(14, "Fantasy");
-        genreMap.put(36, "History");
-        genreMap.put(27, "Horror");
-        genreMap.put(10402, "Music");
-        genreMap.put(9648, "Mystery");
-        genreMap.put(10749, "Romance");
-        genreMap.put(878, "Science Fiction");
-        genreMap.put(10770, "TV Movie");
-        genreMap.put(53, "Thriller");
-        genreMap.put(10752, "War");
-        genreMap.put(37, "Western");
+        genreMap.put(28, "액션");
+        genreMap.put(12, "어드벤처");
+        genreMap.put(16, "애니메이션");
+        genreMap.put(35, "코미디");
+        genreMap.put(80, "범죄");
+        genreMap.put(99, "다큐멘터리");
+        genreMap.put(18, "드라마");
+        genreMap.put(10751, "가족");
+        genreMap.put(14, "판타지");
+        genreMap.put(36, "역사");
+        genreMap.put(27, "호러");
+        genreMap.put(10402, "음악");
+        genreMap.put(9648, "미스테리");
+        genreMap.put(10749, "로맨스");
+        genreMap.put(878, "공상 과학");
+        genreMap.put(10770, "TV 영화");
+        genreMap.put(53, "스릴러");
+        genreMap.put(10752, "전쟁");
+        genreMap.put(37, "서부영화");
     }
 
 
