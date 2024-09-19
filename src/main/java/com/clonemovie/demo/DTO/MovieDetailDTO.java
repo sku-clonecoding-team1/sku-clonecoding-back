@@ -22,7 +22,6 @@ public class MovieDetailDTO {
 
     @Data
     public static class GenreDTO {
-        private Long id;
         private String name;
     }
 }

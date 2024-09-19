@@ -23,13 +23,11 @@ public class ApiController {
     private final MovieRepository movieRepository;
     private final MovieService movieService;
 
-
     @GetMapping("/main")
     public ResponseEntity<List<MovieDetailResponse>> findAllMovies() {
         List<MovieDetailResponse> movieDetailResponses = movieService.getAllMovies();
         return ResponseEntity.ok(movieDetailResponses);
     }
-
 
     @Operation(summary = "메인 페이지(영화Id, title, popularity, vote_average, posterPath)", description = "메인 페이지 조회", tags = "MainPage",
                 responses = {@ApiResponse(responseCode = "200", description = "db에 있는 영화 정보 조회")})

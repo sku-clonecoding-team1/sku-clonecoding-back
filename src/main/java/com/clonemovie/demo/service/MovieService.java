@@ -36,7 +36,6 @@ public class MovieService {
             List<GenreDTO> genreDTOs = new ArrayList<>();
             for (Genres genre : movie.getGenres()) {
                 GenreDTO genreDTO = new GenreDTO();
-                genreDTO.setId(genre.getId());
                 genreDTO.setName(genre.getName());
                 genreDTOs.add(genreDTO);
             }
