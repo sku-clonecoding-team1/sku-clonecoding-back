@@ -2,14 +2,140 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Load JSON Movie Data</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <script src="https://cdn.iamport.kr/vl/iamport.js"></script> <!-- 아임포트 스크립트 -->
 </head>
 <body>
 <h1>Load JSON Movie Data into MySQL</h1>
 <a th:href="@{/index}">Load Data</a>
-<button>카카오페이 결제</button>
-<script src="https://cdn.iamport.kr/vl/iamport.js"></script>
-<script src="/main.js"></script>
 
+<form id="movieScheduleForm" onsubmit="addMovieSchedule(event)">
+    <label for="movieId">영화 ID:</label>
+    <input type="number" id="movieId" name="movieId" required><br>
+
+    <label for="cinemaId">영화관 ID:</label>
+    <input type="number" id="cinemaId" name="cinemaId" required><br>
+
+    <label for="theaterId">영화관의 관:</label>
+    <select id="theaterId" name="theaterId" required>
+        <option value="">관 선택</option>
+        <option value="1">1번</option>
+        <option value="2">2번</option>
+        <option value="3">3번</option>
+        <option value="4">4번</option>
+        <option value="5">5번</option>
+        <option value="6">6번</option>
+    </select><br>
+
+    <label for="scheduleDate">날짜 및 시간:</label>
+    <input type="datetime-local" id="scheduleDate" name="scheduleDate" required><br>
+
+    <button type="submit">영화 일정 추가</button>
+</form>
+
+<!-- 결제 정보 입력 섹션 -->
+<h2>결제 정보</h2>
+<div>
+    <label for="productName">상품명:</label>
+    <input type="text" id="productName" value="영화 예매" readonly><br>
+
+    <label for="totalPrice">결제 금액:</label>
+    <input type="number" id="totalPrice" value="60000" readonly> 원<br>
+</div>
+
+<!-- 카카오페이 결제 버튼 -->
+<button id="paymentBtn">카카오페이 결제</button>
+
+<script>
+    function addMovieSchedule(event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+
+        const form = document.getElementById('movieScheduleForm');
+        const formData = new FormData(form);
+
+        // 폼 데이터를 MovieScheduleDTO 형식에 맞게 변환
+        const data = {
+            movieId: parseInt(formData.get('movieId')),  // 영화 ID
+            cinemaId: parseInt(formData.get('cinemaId')),  // 영화관 ID
+            theaterId: parseInt(formData.get('theaterId')),  // 영화관의 관 ID
+            scheduleDate: new Date(formData.get('scheduleDate')) // 날짜 및 시간
+        };
+
+        // AJAX 요청으로 서버에 데이터 전송
+        fetch('/addMovieSchedule', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(result => {
+                alert('영화 일정이 추가되었습니다!');
+                console.log(result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('영화 일정 추가에 실패했습니다.');
+            });
+    }
+
+    // 카카오페이 결제 함수
+    document.getElementById("paymentBtn").addEventListener("click", function () {
+        let merchant_uid = createOrderNum(); // 주문번호 생성
+        let totalPrice = document.getElementById('totalPrice').value; // 결제 금액
+
+        let IMP = window.IMP;
+        IMP.init('가맹점식별코드'); // 가맹점 식별코드 입력
+
+        // 결제 요청
+        IMP.request_pay({
+            pg: "kakaopay",  // PG사로 카카오페이 사용
+            pay_method: "card",  // 결제 방식
+            merchant_uid: merchant_uid,  // 주문번호
+            name: document.getElementById('productName').value,  // 결제 상품명
+            amount: totalPrice,  // 결제 금액
+            buyer_name: "홍길동",  // 구매자 이름
+            buyer_tel: "01012345678",  // 구매자 전화번호
+            buyer_postcode: "12345",  // 구매자 우편번호
+            buyer_addr: "서울특별시 강남구 역삼동"  // 구매자 주소
+        }, function (rsp) {
+            if (rsp.success) {
+                // 결제 성공 시 처리
+                alert('결제가 완료되었습니다.');
+
+                // 결제 정보 서버로 전달 (필요한 경우)
+                fetch('/paymentComplete', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(rsp)  // 결제 응답 정보 서버로 전송
+                }).then(response => response.json())
+                    .then(result => {
+                        console.log('결제 정보 저장 결과:', result);
+                    });
+            } else {
+                // 결제 실패 시 처리
+                alert('결제에 실패하였습니다. 오류 메시지: ' + rsp.error_msg);
+            }
+        });
+    });
+
+    // 주문번호 생성 함수
+    function createOrderNum() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        let orderNum = year + month + day;
+        for (let i = 0; i < 5; i++) {
+            orderNum += Math.floor(Math.random() * 10);
+        }
+        return orderNum; // 문자열로 반환
+    }
+</script>
 
 </body>
 </html>

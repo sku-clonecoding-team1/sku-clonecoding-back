@@ -12,12 +12,13 @@ import java.util.Date;
 @Setter
 @Data
 @NoArgsConstructor
-public class AddMovieScheduleDTO {
+public class MovieScheduleDTO {
 
     private Long cinemaId;
     private Long movieId;
     private Long theaterId;
     private Date scheduleDate;
+
 
 
 }

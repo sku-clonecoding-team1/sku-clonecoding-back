@@ -26,20 +26,17 @@ public class Member {
     @Setter
     private String nickName;
     private String eMail;
+    private String address;
+
 
     public Member(SignUpDTO.SignUpRequest request) {
         this.userId = request.getUserId();
         this.setPassword(request.getPassword());
         this.nickName = request.getNickName();
         this.eMail = request.getEmail();
+        this.address = request.getAddress();
     }
 
-    public Member(String userId, String password, String nickName, String eMail) {
-        this.userId = userId;
-        this.setPassword(password);
-        this.nickName = nickName;
-        this.eMail = eMail;
-    }
 
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

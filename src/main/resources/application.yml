@@ -22,3 +22,8 @@ logging:
 
 tmdb:
   api-key: "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkMGNhNGQyMmVjODk5ZTJhMTZjMTcyY2JkZDlmMDg4MyIsIm5iZiI6MTcyNTUyNzk2Mi41MjU0MDMsInN1YiI6IjY2OGYzNjNjNGE4NTIyMGFhZWU2ZTQzMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.AndZ865MqPQ2buHuQlIz9WbX6qv4NrYCObJA9-Ntvm8"
+
+iamport:
+  imp.code : 12648182
+  imp.api.key : 5618257762355013
+  imp.api.secretkey : "1SB7cQUixm4jkOUjTVvttqEcEpGTUjgE0f1D9UqrJ3QXr8seyZQxlCyVRRp9l4korlOLcqKB9VBGUqET"
