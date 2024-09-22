@@ -12,7 +12,5 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Seat {
-    private int row;
-    private int column;
     private int tmp;
 }

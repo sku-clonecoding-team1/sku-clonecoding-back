@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 페이지</title>
+    <script type = "text/javascript" src = "https://code.jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src = "https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+    <script>
+        function requestPay() {
+            IMP.init("imp38112401")
+            IMP.request_pay(
+                {
+                    pg: 'html5_inicis',
+                    pay_method: 'card',
+                    merchant_uid: '534342855-403',
+                    name : '당근 10kg',
+                    amount: 1004,
+                    buyer_email: "sung25480@naver.com",
+                    buyer_name: "홍길동",
+                    buyer_tel : "010-1234-2567",
+                    buyer_addr : "서울특별시 구로구 구일동",
+                    buyer_postcode : "123-456"
+                }, function(rsp) {
+                    if (rsp.success) {
+                        console.log(rsp);
+                    } else {
+                        console.log(rsp);
+                    }
+                });
+        }
+    </script>
+</head>
+<body>
+    <button onclick="requestPay()"> 결제하기 </button>
+</body>
+</html>
