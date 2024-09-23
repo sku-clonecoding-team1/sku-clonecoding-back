@@ -2,11 +2,13 @@ package com.clonemovie.demo.controller;
 
 
 import com.clonemovie.demo.DTO.MovieScheduleDTO;
+import com.clonemovie.demo.DTO.ScheduleResponseDTO;
 import com.clonemovie.demo.domain.Schedule;
 import com.clonemovie.demo.service.MovieScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +41,16 @@ public class MovieScheduleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
     }
+
+    @GetMapping("/getMovieScheduleAll")
+    public ResponseEntity<List<ScheduleResponseDTO>> getMovieSchedule(){
+        try{
+            return ResponseEntity.ok(movieScheduleService.getMovieScheduleAll());
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+    }
+
 
 
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="stylesheet" type="text/css" href="/style.css">
     <title>Load JSON Movie Data</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://cdn.iamport.kr/vl/iamport.js"></script> <!-- 아임포트 스크립트 -->
@@ -33,9 +34,25 @@
     <button type="submit">영화 일정 추가</button>
 </form>
 
-<!-- 결제 정보 입력 섹션 -->
-<h1>1달러샵에 오신걸을 환영합니다. ^^</h1>
-<a href="/order">주문페이지로 이동</a>
+<!-- 예약 정보 테이블 -->
+<h2>예약 정보</h2>
+<table id="reservationTable" border="1">
+    <thead>
+    <tr>
+        <th>영화 ID</th>
+        <th>영화관 ID</th>
+        <th>관 ID</th>
+        <th>날짜 및 시간</th>
+        <th>좌석 상태</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 예약 정보가 여기에 추가됩니다 -->
+    </tbody>
+</table>
+
+<!-- 영화 일정 가져오기 버튼 -->
+<button onclick="getMovieSchedule()">영화 일정 가져오기</button>
 
 <script>
     function addMovieSchedule(event) {
@@ -71,7 +88,50 @@
             });
     }
 
+    function getMovieSchedule() {
+        fetch('/getMovieScheduleAll', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(schedules => {
+                const tbody = document.getElementById('reservationTable').querySelector('tbody');
+                tbody.innerHTML = ''; // 기존 내용을 비움
 
+                schedules.forEach(schedule => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${schedule.movieId}</td>
+                        <td>${schedule.cinemaName}</td>
+                        <td>${schedule.theaterId}</td>
+                        <td>${new Date(schedule.scheduleDate).toLocaleString()}</td>
+                        <td>${createSeatingMatrix()}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching movie schedules:', error);
+            });
+    }
+
+    function createSeatingMatrix() {
+        const rows = 13; // A부터 M까지의 13개 행
+        const cols = 16; // 1부터 16까지의 16개 열
+        let seatingHTML = ''; // 좌석 HTML 문자열 초기화
+
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const seatLabel = String.fromCharCode(65 + i) + (j + 1); // A1, B1, C1 형식
+                seatingHTML += `<button style="background-color: green;" onclick="alert('${seatLabel} 좌석 클릭됨!')">${seatLabel}</button>`;
+            }
+            seatingHTML += '<br>'; // 각 행 끝에 줄 바꿈 추가
+        }
+
+        return seatingHTML; // 생성된 HTML 반환
+    }
 </script>
 
 </body>

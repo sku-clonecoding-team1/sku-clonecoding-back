@@ -27,6 +27,7 @@ public class MovieService {
     private final OkHttpClient client = new OkHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final GenreMapper genreMapper = new GenreMapper();
+
     @Autowired
     private TmdbProperties tmdbProperties;
 
