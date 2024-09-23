@@ -32,7 +32,6 @@ public class MovieController {
         }
     }
 
-
     @GetMapping("/getMovieDetail/{movieId}")
     public ResponseEntity<MovieDetailDTO> getMoviePage(@PathVariable Long movieId){
         try {

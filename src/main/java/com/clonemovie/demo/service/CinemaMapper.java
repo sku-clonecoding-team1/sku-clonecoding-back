@@ -44,4 +44,9 @@ public class CinemaMapper {
         String cinemaName = cinemaMap.get(cinemaId);
         return cinemaName != null ? cinemaName : "알 수 없음"; // 매핑되지 않은 ID에 대한 처리
     }
+
+
+    public static Map<Integer, String > getCinemaMap(){
+        return cinemaMap;
+    }
 }
