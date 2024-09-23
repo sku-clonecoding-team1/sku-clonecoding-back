@@ -5,6 +5,7 @@
     <title>Load JSON Movie Data</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
     <script src="https://cdn.iamport.kr/vl/iamport.js"></script> <!-- 아임포트 스크립트 -->
+
 </head>
 <body>
 <h1>Load JSON Movie Data into MySQL</h1>
@@ -53,6 +54,15 @@
 
 <!-- 영화 일정 가져오기 버튼 -->
 <button onclick="getMovieSchedule()">영화 일정 가져오기</button>
+
+<div class="kg_pay_btn">
+    <button type="button" th:onclick="kg_request_pay()">결제하기</button>
+</div>
+<div class="ka_pay_btn">
+    <button type="button" th:onclick="ka_request_pay()">카카오페이</button>
+</div>
+
+
 
 <script>
     function addMovieSchedule(event) {
@@ -107,7 +117,7 @@
                         <td>${schedule.cinemaName}</td>
                         <td>${schedule.theaterId}</td>
                         <td>${new Date(schedule.scheduleDate).toLocaleString()}</td>
-                        <td>${createSeatingMatrix()}</td>
+                        <td>${createSeatingMatrix(schedule.scheduleId)}</td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -117,7 +127,7 @@
             });
     }
 
-    function createSeatingMatrix() {
+    function createSeatingMatrix(scheduleId) {
         const rows = 13; // A부터 M까지의 13개 행
         const cols = 16; // 1부터 16까지의 16개 열
         let seatingHTML = ''; // 좌석 HTML 문자열 초기화
@@ -125,13 +135,23 @@
         for (let i = 0; i < rows; i++) {
             for (let j = 0; j < cols; j++) {
                 const seatLabel = String.fromCharCode(65 + i) + (j + 1); // A1, B1, C1 형식
-                seatingHTML += `<button style="background-color: green;" onclick="alert('${seatLabel} 좌석 클릭됨!')">${seatLabel}</button>`;
+                const seatID = `schedule-${scheduleId}-${i}-${j}`; // scheduleId를 포함한 고유 ID
+                seatingHTML += `<button id="${seatID}" style="background-color: green;" onclick="goToSeatPage('${seatID}')">${seatLabel}</button>`;
             }
             seatingHTML += '<br>'; // 각 행 끝에 줄 바꿈 추가
         }
 
         return seatingHTML; // 생성된 HTML 반환
     }
+
+
+    function goToSeatPage(seatID) {
+        // 다른 페이지로 이동하면서 좌석 ID 정보를 쿼리 파라미터로 전달
+        window.location.href = `/seatDetail?seatID=${seatID}`;
+    }
+
+
+
 </script>
 
 </body>
