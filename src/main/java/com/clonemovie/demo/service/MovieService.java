@@ -169,6 +169,11 @@ public class MovieService {
     }
 
 
+    // movieID를 가지고 타이틀을 가지고 옴 장바구니를 만들어 결제 시스템을 만들기 위함
+    public String getMovieTitleToMovieId(Long movieId){
+        return movieRepository.findById(movieId).get().getTitle();
+    }
+
 
     public MovieDetailDTO getMoviesDetail(Long movieId) throws IOException {
 

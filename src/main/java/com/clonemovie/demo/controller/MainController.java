@@ -1,6 +1,7 @@
 package com.clonemovie.demo.controller;
 
 import com.clonemovie.demo.service.CinemaMapper;
+import com.clonemovie.demo.service.MovieService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +14,12 @@ import java.util.Map;
 public class MainController {
 
 
+    private final MovieService movieService;
+
+    public MainController(MovieService movieService) {
+        this.movieService = movieService;
+    }
+
     // 현재 controller에 있는 모든 메소드는 Spring에서 테스트 해보기 위함
     @GetMapping("/index")
     public String index() {
@@ -22,9 +29,17 @@ public class MainController {
 
     // 테스트 view단에 정보 보내기
     @GetMapping("/seatDetail")
-    public String seatDetail(@RequestParam("seatID") String seatID, Model model) {
+    public String seatDetail(@RequestParam("seatID") String seatID,
+                             @RequestParam("movieId") long movieId,
+                             @RequestParam("cinemaId") int cinemaId,
+                             Model model) {
         model.addAttribute("seatID", seatID);
+        model.addAttribute("movieId", movieId);
+        model.addAttribute("movieName", movieService.getMovieTitleToMovieId(movieId));
+        model.addAttribute("cinemaId", cinemaId );
+        model.addAttribute("cinemaName", CinemaMapper.getCinemaName(cinemaId) );
         // seatDetail.html로 이동 (뷰 파일 이름)
+
         return "ticketDetail";
     }
     

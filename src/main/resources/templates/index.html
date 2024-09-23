@@ -61,13 +61,6 @@
 <!-- 영화 일정 가져오기 버튼 -->
 <button onclick="getMovieSchedule()">영화 일정 가져오기</button>
 
-<div class="kg_pay_btn">
-    <button type="button" th:onclick="kg_request_pay()">결제하기</button>
-</div>
-<div class="ka_pay_btn">
-    <button type="button" th:onclick="ka_request_pay()">카카오페이</button>
-</div>
-
 
 
 <script>
@@ -164,7 +157,7 @@
                         <td>${schedule.cinemaName}</td>
                         <td>${schedule.theaterId}</td>
                         <td>${new Date(schedule.scheduleDate).toLocaleString()}</td>
-                        <td>${createSeatingMatrix(schedule.scheduleId)}</td>
+                        <td>${createSeatingMatrix(schedule.scheduleId, schedule.movieId, schedule.cinemaId)}</td>
                     `;
                     tbody.appendChild(row);
                 });
@@ -174,7 +167,7 @@
             });
     }
 
-    function createSeatingMatrix(scheduleId) {
+    function createSeatingMatrix(scheduleId, movieId, cinemaId) {
         const rows = 13; // A부터 M까지의 13개 행
         const cols = 16; // 1부터 16까지의 16개 열
         let seatingHTML = ''; // 좌석 HTML 문자열 초기화
@@ -183,7 +176,8 @@
             for (let j = 0; j < cols; j++) {
                 const seatLabel = String.fromCharCode(65 + i) + (j + 1); // A1, B1, C1 형식
                 const seatID = `schedule-${scheduleId}-${i}-${j}`; // scheduleId를 포함한 고유 ID
-                seatingHTML += `<button id="${seatID}" style="background-color: green;" onclick="goToSeatPage('${seatID}')">${seatLabel}</button>`;
+                seatingHTML += `<button id="${seatID}" style="background-color: green;"
+                            onclick="goToSeatPage('${seatID}', ${movieId}, ${cinemaId})">${seatLabel}</button>`;
             }
             seatingHTML += '<br>'; // 각 행 끝에 줄 바꿈 추가
         }
@@ -192,13 +186,10 @@
     }
 
 
-    function goToSeatPage(seatID) {
-        // 다른 페이지로 이동하면서 좌석 ID 정보를 쿼리 파라미터로 전달
-        window.location.href = `/seatDetail?seatID=${seatID}`;
+    function goToSeatPage(seatID, movieId, cinemaId) {
+        // 영화 ID를 쿼리 파라미터에 추가해서 페이지로 이동
+        window.location.href = `/seatDetail?seatID=${seatID}&movieId=${movieId}&cinemaId=${cinemaId}`;
     }
-
-
-
 </script>
 
 </body>
