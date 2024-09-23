@@ -23,7 +23,7 @@ public class MovieController {
     public ResponseEntity<List<MoviePageDTO>> getMoviePage(@PathVariable int page){
         try {
             // 성공 시 200 상태 코드와 함께 응답 반환
-            return ResponseEntity.ok(movieService.getNowPlayingMovies(page));
+            return ResponseEntity.ok(movieService.saveMoviesFromApi(page));
         } catch (Exception e) {
             // 예외 발생 시 MovieResponse의 빈 객체 반환
             List<MoviePageDTO> emptyResponse = new ArrayList<>();

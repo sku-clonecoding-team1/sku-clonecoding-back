@@ -3,6 +3,10 @@ package com.clonemovie.demo.service;
 
 import com.clonemovie.demo.DTO.*;
 import com.clonemovie.demo.configuration.TmdbProperties;
+import com.clonemovie.demo.domain.Movie;
+import com.clonemovie.demo.domain.MovieHash;
+import com.clonemovie.demo.repository.MovieHashRepository;
+import com.clonemovie.demo.repository.MovieRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +32,63 @@ public class MovieService {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final GenreMapper genreMapper = new GenreMapper();
 
+
     @Autowired
     private TmdbProperties tmdbProperties;
+    @Autowired
+    private MovieHashRepository movieHashRepository;
+    @Autowired
+    private MovieRepository movieRepository;
 
 
+    @Transactional
+    public List<MoviePageDTO> saveMoviesFromApi(int page) throws IOException {
+        // 첫 번째 페이지 데이터를 가져오고 해시 값을 계산
+        List<MoviePageDTO> firstPageMovies = getNowPlayingMovies(page);
+        String firstPageHash  = sha256Hex( objectMapper.writeValueAsString(firstPageMovies));
+
+        // 가장 최근 저장된 해시 값을 가져옴
+        MovieHash latestHash = movieHashRepository.findTopByOrderByCreatedAtDesc().orElse(null);
+
+        List<MoviePageDTO> savedMovies = new ArrayList<>();
+
+        if (latestHash != null && firstPageHash.equals(latestHash.getHashValue())) {
+            // 해시 값이 동일하면 MOVIE DB의 기존 데이터를 반환
+            List<Movie> data = movieRepository.findAll();
+            for (Movie movie : data) {
+                savedMovies.add(new MoviePageDTO(movie));
+            }
+            return savedMovies;
+        }
+
+        // 해시 값이 없거나 다르면 새로운 데이터를 받아와 DB에 저장하고 해시 값을 업데이트
+
+        // 해시 값이 다르면 기존 데이터를 삭제
+        movieRepository.deleteAll(); // 모든 영화 데이터를 삭제
+        movieHashRepository.deleteAll(); // 해쉬도 삭제
+
+        for (int i = page; i <= page + 2; i++) {
+            List<MoviePageDTO> movies = getNowPlayingMovies(i);
+            savedMovies.addAll(movies);
+            for (MoviePageDTO dto : movies) {
+                Movie movie = new Movie(dto);
+                // DB에 영화 정보를 저장
+                movieRepository.save(movie);
+                System.out.println("저장되었습니다~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+            }
+
+        }
+
+        // 새로운 해시 값을 해시 테이블에 저장
+        MovieHash newHash = new MovieHash();
+        newHash.setHashValue(firstPageHash);
+        newHash.setCreatedAt(java.time.LocalDateTime.now().toString());
+        movieHashRepository.save(newHash);
+
+        return savedMovies;  // 저장된 영화 리스트 반환
+    }
+
+    @Transactional
     public List<MoviePageDTO> getNowPlayingMovies(int page) throws IOException {
 
         // URL을 빌더를 사용하여 구성합니다.
@@ -61,8 +118,6 @@ public class MovieService {
 
             // 응답 본문을 JSON 문자열로 변환
             String responseBody = response.body().string();
-            // SHA-256 해시값 반환
-            String convertHash = sha256Hex(responseBody);
             // JSON 응답을 파싱하여 'results' 배열을 추출
             JsonNode resultsNode = objectMapper.readTree(responseBody).get("results");
 
