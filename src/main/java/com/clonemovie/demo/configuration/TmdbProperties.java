@@ -1,5 +1,6 @@
 package com.clonemovie.demo.configuration;
 
+import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 public class TmdbProperties {
     private String apiKey;
 
-    // Getter와 Setter 추가
     public String getApiKey() {
         return apiKey;
     }

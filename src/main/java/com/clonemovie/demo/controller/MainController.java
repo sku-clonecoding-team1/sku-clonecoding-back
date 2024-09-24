@@ -1,7 +1,10 @@
 package com.clonemovie.demo.controller;
 
+import com.clonemovie.demo.configuration.PortOneConfig;
 import com.clonemovie.demo.service.CinemaMapper;
 import com.clonemovie.demo.service.MovieService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
-
-
+    private final PortOneConfig portOneConfig;
     private final MovieService movieService;
-
-    public MainController(MovieService movieService) {
-        this.movieService = movieService;
-    }
 
     // 현재 controller에 있는 모든 메소드는 Spring에서 테스트 해보기 위함
     @GetMapping("/index")
@@ -49,6 +48,12 @@ public class MainController {
     public ResponseEntity<Map<Integer, String>> getCinemas() {
         Map<Integer, String> cinemas = CinemaMapper.getCinemaMap();
         return ResponseEntity.ok(cinemas); // 정상 응답 반환
+    }
+
+
+    @GetMapping("/api/get-imp-code")
+    public ResponseEntity<String> getImpCode() {
+        return ResponseEntity.ok(portOneConfig.getImpCode());
     }
 
 
