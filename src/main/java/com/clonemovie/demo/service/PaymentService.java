@@ -17,7 +17,15 @@ public class PaymentService {
     private final MovieScheduleService movieScheduleService;
     private final MemberService memberService;
 
+    public boolean getPaymentLog(PaymentLogDTO request){
+        String[] tmp = request.getSeatID().split("-");
+        Long scheduleId= Long.parseLong(tmp[1]);
+        Long seatRow = Long.parseLong(tmp[2]);
+        Long seatCol = Long.parseLong(tmp[3]);
 
+        return paymentRepository.existsByScheduleIdAndSeatRowAndSeatCol(scheduleId, seatRow, seatCol);
+
+    }
 
 
     @Transactional

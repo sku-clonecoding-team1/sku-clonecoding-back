@@ -28,7 +28,31 @@
 
 <script>
 
-    function before_payment() {
+    async function check_seat() {
+        const data = {
+            seatID: $('#seatID').text(),
+        };
+
+        // 결제 전 확인하기
+        const response = await fetch('/checkSeat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const isSeatOccupied = await response.json();
+
+        if (isSeatOccupied) {
+            alert('결제 로그 생성 중 오류가 발생했습니다.');
+            return false;  // 중단 신호로 false 반환
+        }
+
+        return true;  // 좌석 결제 가능
+    }
+
+    function after_payment() {
         const data = {
             seatID: $('#seatID').text(),       // 텍스트 값 가져오기
             movieName: $('#movieName').text(),
@@ -74,7 +98,7 @@
             });
     }
 
-    function kg_request_pay() {
+    async function kg_request_pay() {
         if (!window.IMP) {
             alert("결제 모듈이 로드되지 않았습니다.");
             return;
@@ -83,7 +107,10 @@
         IMP = window.IMP;
         // 결제 전 로그 생성
 
-
+        const seatCheck = await check_seat();
+        if (!seatCheck){
+            return
+        }
 
         // 가맹점 식별코드를 로드 후 결제 처리
         loadImpCode().then(impCode => {
@@ -104,7 +131,7 @@
             }, function(rsp) {
                 if (rsp.success) {
                     alert('결제가 완료되었습니다.');
-                    before_payment();
+                    after_payment();
 
                     console.log(rsp);
                 } else {
@@ -116,13 +143,19 @@
         });
     }
 
-    function ka_request_pay() {
+    async function ka_request_pay() {
         if (!window.IMP) {
             alert("결제 모듈이 로드되지 않았습니다.");
             return;
         }
 
         IMP = window.IMP;
+
+        const seatCheck = await check_seat();
+        if (!seatCheck){
+            return
+        }
+
 
         // 가맹점 식별코드를 로드 후 결제 처리
         loadImpCode().then(impCode => {
@@ -142,7 +175,7 @@
             }, function(rsp) {
                 if (rsp.success) {
                     alert('결제가 완료되었습니다.');
-                    before_payment();
+                    after_payment();
 
                     console.log(rsp);
                 } else {
