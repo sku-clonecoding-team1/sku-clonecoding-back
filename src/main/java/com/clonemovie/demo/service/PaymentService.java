@@ -18,6 +18,8 @@ public class PaymentService {
     private final MemberService memberService;
 
 
+
+
     @Transactional
     public PaymentLog savePaymentLog(PaymentLogDTO request) {
         String[] tmp = request.getSeatID().split("-");
@@ -27,7 +29,7 @@ public class PaymentService {
 
         Schedule schedule = movieScheduleService.findMocieSchedule(scheduleId);
 
-        return paymentRepository.save(new PaymentLog( schedule, request.getSeatID(), request.getPrice()) );
+        return paymentRepository.save(new PaymentLog( schedule, seatRow, seatCol, request.getPrice()) );
 
 
     }
