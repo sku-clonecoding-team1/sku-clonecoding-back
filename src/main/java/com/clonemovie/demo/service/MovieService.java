@@ -9,7 +9,6 @@ import com.clonemovie.demo.repository.MovieHashRepository;
 import com.clonemovie.demo.repository.MovieRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,6 +22,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -308,6 +308,12 @@ public class MovieService {
             }
         }
         return originCountries;
+    }
+
+
+    //
+    public Optional<Movie> findMovie(Long movieId){
+        return movieRepository.findById(movieId);
     }
 
 }

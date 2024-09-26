@@ -154,9 +154,11 @@
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${schedule.movieId}</td>
+                        <td>${schedule.movieId}</td>
                         <td>${schedule.cinemaName}</td>
                         <td>${schedule.theaterId}</td>
                         <td>${new Date(schedule.scheduleDate).toLocaleString()}</td>
+
                         <td>${createSeatingMatrix(schedule.scheduleId, schedule.movieId, schedule.cinemaId)}</td>
                     `;
                     tbody.appendChild(row);

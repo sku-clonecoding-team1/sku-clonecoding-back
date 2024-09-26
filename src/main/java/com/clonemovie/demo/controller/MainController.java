@@ -4,7 +4,6 @@ import com.clonemovie.demo.configuration.PortOneConfig;
 import com.clonemovie.demo.service.CinemaMapper;
 import com.clonemovie.demo.service.MovieService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +31,7 @@ public class MainController {
                              @RequestParam("movieId") long movieId,
                              @RequestParam("cinemaId") int cinemaId,
                              Model model) {
+
         model.addAttribute("seatID", seatID);
         model.addAttribute("movieId", movieId);
         model.addAttribute("movieName", movieService.getMovieTitleToMovieId(movieId));

@@ -48,4 +48,7 @@ public class MovieScheduleService {
         return response;
     }
 
+    public Schedule findMocieSchedule(Long scheduleId) {
+        return movieScheduleRepository.findById(scheduleId).orElse(null);
+    }
 }

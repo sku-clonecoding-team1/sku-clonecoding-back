@@ -7,10 +7,12 @@
 </head>
 <body>
 <h1>영화 정보</h1>
-<p>좌석 ID: <span th:text="${seatID}"></span></p>
-<p>영화 제목: <span th:text="${movieName}"></span></p>
-<p>영화관 이름: <span th:text="${cinemaName}"></span></p>
-<p>티켓 가격: <span th:text="1"></span></p>
+<p>좌석 ID: <span id="seatID" th:text="${seatID}"></span></p>
+<p>영화 제목: <span id="movieName" th:text="${movieName}"></span></p>
+<p>영화관 이름: <span id="cinemaName" th:text="${cinemaName}"></span></p>
+<p>티켓 가격: <span id="ticketPrice" th:text="1"></span></p>
+
+
 
 <!-- 내부적으로 ID 값을 저장하기 위한 hidden 필드 -->
 <input type="hidden" th:value="${movieId}" id="movieId" />
@@ -25,6 +27,37 @@
 </div>
 
 <script>
+
+    function before_payment() {
+        const data = {
+            seatID: $('#seatID').text(),       // 텍스트 값 가져오기
+            movieName: $('#movieName').text(),
+            cinemaName: $('#cinemaName').text(),
+            price: $('#ticketPrice').text(),   // 티켓 가격 가져오기
+            movieId: $('#movieId').val(),      // 숨겨진 필드의 값
+            cinemaId: $('#cinemaId').val()     // 숨겨진 필드의 값
+        };
+
+        // 결제 로그를 백엔드로 보내기
+        return fetch('/paymentLogging', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+            .then(response => response.json())
+            .then(result => {
+                console.log('결제 로그가 성공적으로 생성되었습니다: ', result);
+                return result; // 결제 로그 ID 반환
+            })
+            .catch(error => {
+                console.error('결제 로그 생성 중 오류 발생:', error);
+                alert('결제 로그 생성 중 오류가 발생했습니다.');
+            });
+    }
+
+
 
     function loadImpCode() {
         return fetch('/api/get-imp-code')
@@ -48,6 +81,10 @@
         }
 
         IMP = window.IMP;
+        // 결제 전 로그 생성
+
+        before_payment();
+
 
         // 가맹점 식별코드를 로드 후 결제 처리
         loadImpCode().then(impCode => {

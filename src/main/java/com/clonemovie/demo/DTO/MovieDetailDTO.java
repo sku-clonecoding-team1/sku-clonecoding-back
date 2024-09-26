@@ -41,6 +41,4 @@ public class MovieDetailDTO {
     private int voteCount;  // 투표 수
 
 
-
-
 }
