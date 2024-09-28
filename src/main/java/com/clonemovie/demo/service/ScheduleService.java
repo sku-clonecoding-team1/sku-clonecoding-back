@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
 
-    @Transactional
-    public Schedule save(Schedule schedule) {
-        return scheduleRepository.save(schedule);
-    }
+//    @Transactional
+//    public Schedule save(Schedule schedule) {
+//        return scheduleRepository.save(schedule);
+//    }
 }

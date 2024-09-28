@@ -14,16 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ScheduleController {
-    private final ScheduleService scheduleService;
-    private final ScheduleRepository scheduleRepository;
-
-    @PostMapping("/main/schedule")
-    public ResponseEntity<Schedule> addSchedule(@RequestBody Schedule schedule) {
-        return ResponseEntity.ok(scheduleRepository.save(schedule));
-    }
-
-    @GetMapping("/main/schedule")
-    public ResponseEntity<?> getAllSchedules() {
-        return ResponseEntity.ok(scheduleRepository.findAll());
-    }
+//    private final ScheduleService scheduleService;
+//    private final ScheduleRepository scheduleRepository;
+//
+//    @PostMapping("/main/schedule")
+//    public ResponseEntity<Schedule> addSchedule(@RequestBody Schedule schedule) {
+//        return ResponseEntity.ok(scheduleRepository.save(schedule));
+//    }
+//
+//    @GetMapping("/main/schedule")
+//    public ResponseEntity<?> getAllSchedules() {
+//        return ResponseEntity.ok(scheduleRepository.findAll());
+//    }
 }
