@@ -12,7 +12,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ScheduleDTO {
-    private Movie movieId;
+    private Long movieId;
     private Long cinemaId;
     private Long theater;
     private Date date;

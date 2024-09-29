@@ -1,7 +1,9 @@
 package com.clonemovie.demo.service;
 
 import com.clonemovie.demo.DTO.ScheduleDTO;
+import com.clonemovie.demo.domain.Movie;
 import com.clonemovie.demo.domain.Schedule;
+import com.clonemovie.demo.repository.MovieRepository;
 import com.clonemovie.demo.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,10 +16,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
+    private final MovieRepository movieRepository;
 
     @Transactional
     public Schedule addSchedule(ScheduleDTO request) {
-        Schedule schedule = new Schedule(request.getMovieId(), request.getCinemaId(), request.getTheater(), request.getDate());
+        Movie movie = movieRepository.findById(request.getMovieId()).orElse(null);
+        Schedule schedule = new Schedule();
+        schedule.setMovieId(movie);
+        schedule.setCinemaId(request.getCinemaId());
+        schedule.setTheater(request.getTheater());
+        schedule.setDate(request.getDate());
         return scheduleRepository.save(schedule);
     }
 
@@ -33,8 +41,8 @@ public class ScheduleService {
         return CinemaMapper.getCinemaName(cinemaId);
     }
 
-    public List<Schedule> findSchedulebyCinemaId(Long cinemaId) {
-        return scheduleRepository.findByCinemaId(cinemaId);
+    public List<Schedule> findSchedulebyCinemaId(Long cinema_id) {
+        return scheduleRepository.findByCinemaId(cinema_id);
     }
 
     @Transactional

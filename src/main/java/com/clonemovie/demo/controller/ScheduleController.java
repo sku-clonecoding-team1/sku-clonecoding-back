@@ -26,7 +26,7 @@ public class ScheduleController {
 
     @GetMapping("/schedulelist")
     public ResponseEntity<List<Schedule>> getSchedules() {
-        List<Schedule> schedules = new ArrayList<>();
+        List<Schedule> schedules = scheduleService.findAll();
         return ResponseEntity.ok(schedules);
     }
 }

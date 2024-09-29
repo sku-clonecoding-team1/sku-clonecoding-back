@@ -18,19 +18,19 @@ public class Schedule {
 
     @ManyToOne
     @JoinColumn(name = "Movie")
-    private Movie movie_id;
-    private Long cinema_id;     // 서울 - 강남(0)
+    private Movie movieId;
+    private Long cinemaId;     // 서울 - 강남(0)
     private Long theater;       // 몇 관
     private Date date;
 
-    public Schedule(Movie movie_id, Long cinema_id, Long theater, Date date) {
-        this.movie_id = movie_id;
-        this.cinema_id = cinema_id;
+    public Schedule(Movie movieId, Long cinemaId, Long theater, Date date) {
+        this.movieId = movieId;
+        this.cinemaId = cinemaId;
         this.theater = theater;
         this.date = date;
     }
 
     public String getCinemaName() {
-        return CinemaMapper.getCinemaName(this.cinema_id);
+        return CinemaMapper.getCinemaName(this.cinemaId);
     }
 }
