@@ -15,5 +15,5 @@ public class ScheduleDTO {
     private Long movieId;
     private Long cinemaId;
     private Long theater;
-    private Date date;
+    private LocalDate date;
 }

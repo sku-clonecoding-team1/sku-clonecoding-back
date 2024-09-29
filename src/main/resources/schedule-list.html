@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 상영 일정 추가</title>
+    <script>
+        async function submitScheduleForm(event) {
+            event.preventDefault();
+
+            const scheduleData = {
+                movieId: Number(document.getElementById('movieId').value),  // 숫자로 변환
+                cinemaId: Number(document.getElementById('cinemaId').value),  // 숫자로 변환
+                theater: Number(document.getElementById('theater').value),  // 숫자로 변환
+                date: document.getElementById('date').value  // 날짜는 그대로 문자열로 처리
+            };
+
+            console.log(JSON.stringify(scheduleData));  // 서버로 전송 전에 데이터를 확인
+
+            fetch('/schedule', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(scheduleData)
+            })
+                .then(response => response.json())
+                .then(result => {
+                    alert('영화 일정이 추가되었습니다!');
+                    console.log(result);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('영화 일정 추가에 실패했습니다.');
+                });
+        }
+    </script>
+</head>
+<body>
+<h1>영화 상영 일정 추가</h1>
+
+<form onsubmit="submitScheduleForm(event)">
+    <label for="movieId">영화 ID:</label>
+    <input type="number" id="movieId" name="movieId" required><br>
+
+    <label for="cinemaId">영화관 ID:</label>
+    <input type="number" id="cinemaId" name="cinemaId" required><br>
+
+    <label for="theater">상영관 번호:</label>
+    <input type="number" id="theater" name="theater" required><br>
+
+    <label for="date">상영 날짜:</label>
+    <input type="date" id="date" name="date" required><br>
+
+    <button type="submit">추가</button>
+</form>
+</body>
+</html>

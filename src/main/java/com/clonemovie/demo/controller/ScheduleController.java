@@ -5,6 +5,7 @@ import com.clonemovie.demo.domain.Schedule;
 import com.clonemovie.demo.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +21,7 @@ public class ScheduleController {
 
     @PostMapping("/schedule")
     public ResponseEntity<Schedule> addSchedule(@RequestBody ScheduleDTO request) {
+        System.out.println("Received ScheduleDTO: " + request.toString());
         Schedule schedule = scheduleService.addSchedule(request);
         return ResponseEntity.ok(schedule);
     }

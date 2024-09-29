@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Getter
@@ -21,9 +22,9 @@ public class Schedule {
     private Movie movieId;
     private Long cinemaId;     // 서울 - 강남(0)
     private Long theater;       // 몇 관
-    private Date date;
+    private LocalDate date;
 
-    public Schedule(Movie movieId, Long cinemaId, Long theater, Date date) {
+    public Schedule(Movie movieId, Long cinemaId, Long theater, LocalDate date) {
         this.movieId = movieId;
         this.cinemaId = cinemaId;
         this.theater = theater;
