@@ -21,11 +21,7 @@ public class ScheduleService {
     @Transactional
     public Schedule addSchedule(ScheduleDTO request) {
         Movie movie = movieRepository.findById(request.getMovieId()).orElse(null);
-        Schedule schedule = new Schedule();
-        schedule.setMovieId(movie);
-        schedule.setCinemaId(request.getCinemaId());
-        schedule.setTheater(request.getTheater());
-        schedule.setDate(request.getDate());
+        Schedule schedule = new Schedule(movie, request.getCinemaId(), request.getTheater(), request.getDate());
         return scheduleRepository.save(schedule);
     }
 

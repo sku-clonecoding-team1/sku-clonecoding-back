@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -18,10 +19,11 @@ public class Schedule {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "Movie")
+    @JoinColumn(name = "movie_id")
     private Movie movieId;
     private Long cinemaId;     // 서울 - 강남(0)
     private Long theater;       // 몇 관
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     public Schedule(Movie movieId, Long cinemaId, Long theater, LocalDate date) {
