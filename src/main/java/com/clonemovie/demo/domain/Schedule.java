@@ -5,9 +5,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -22,10 +21,9 @@ public class Schedule {
     private Movie movieId;
     private Long cinemaId;     // 서울 - 강남(0)
     private Long theater;       // 몇 관
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime date;
+    private Date date;
 
-    public Schedule(Movie movieId, Long cinemaId, Long theater, LocalDateTime date) {
+    public Schedule(Movie movieId, Long cinemaId, Long theater, Date date) {
         this.movieId = movieId;
         this.cinemaId = cinemaId;
         this.theater = theater;
