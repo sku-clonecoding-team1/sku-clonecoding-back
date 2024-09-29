@@ -28,7 +28,7 @@ public class ScheduleController {
         return ResponseEntity.ok(schedule);
     }
 
-    @Operation(summary = "Schedule 테이블에 있는 정보 모두 조회", description = "", tags = "schedule",
+    @Operation(summary = "Schedule 테이블()", description = "", tags = "schedule",
             responses = {@ApiResponse(responseCode = "200", description = "db에 있는 정보 조회")})
     @GetMapping("/schedulelist")
     public ResponseEntity<List<Schedule>> getSchedules() {

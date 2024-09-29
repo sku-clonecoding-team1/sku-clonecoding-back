@@ -41,6 +41,7 @@ public class ScheduleService {
         return scheduleRepository.findByCinemaId(cinema_id);
     }
 
+
     @Transactional
     public void deleteSchedule(Long id) {
         Schedule schedule = findById(id);

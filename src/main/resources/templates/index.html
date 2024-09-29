@@ -1,52 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>영화 상영 일정 추가</title>
+    <title>영화 상영 일정 관리</title>
     <script>
+        // 스케줄 리스트를 가져와 화면에 표시하는 함수
+        async function loadScheduleList() {
+            try {
+                const response = await fetch('/schedulelist', {
+                    method: 'GET'
+                });
+
+                if (response.ok) {
+                    const schedules = await response.json();
+                    displaySchedules(schedules);
+                } else {
+                    console.error('스케줄 데이터를 가져오는데 실패했습니다.');
+                    alert('스케줄 데이터를 가져오는데 문제가 발생했습니다.');
+                }
+            } catch (error) {
+                console.error('네트워크 오류:', error);
+                alert('네트워크 오류가 발생했습니다.');
+            }
+        }
+
+        // 스케줄 데이터를 HTML로 표시하는 함수
+        function displaySchedules(schedules) {
+            const scheduleListElement = document.getElementById('scheduleList');
+            scheduleListElement.innerHTML = '';  // 기존 내용을 비우기
+
+            schedules.forEach(schedule => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `영화 제목: ${schedule.movieId.title} | 영화관 ID: ${schedule.cinemaId} | 상영관: ${schedule.theater} | 상영 날짜: ${schedule.date}`;
+                scheduleListElement.appendChild(listItem);
+            });
+        }
+
+        // 스케줄 추가 함수
         async function submitScheduleForm(event) {
             event.preventDefault();  // 폼 기본 제출 동작을 방지
 
-            // 입력 데이터를 수집하여 객체로 생성
+            // 날짜와 시간을 결합해서 전송하기 위한 준비
+            const date = document.getElementById('date').value;  // "YYYY-MM-DD" 형식
+            const time = document.getElementById('time').value;  // "HH:MM" 형식
+            const dateTime = `${date}T${time}:00`;  // "YYYY-MM-DDTHH:MM:SS" ISO 형식
+
             const scheduleData = {
-                movieId: Number(document.getElementById('movieId').value),
-                cinemaId: Number(document.getElementById('cinemaId').value),
-                theater: Number(document.getElementById('theater').value),
-                date: document.getElementById('date').value
+                movieId: Number(document.getElementById('movieId').value),  // 숫자로 변환
+                cinemaId: Number(document.getElementById('cinemaId').value),  // 숫자로 변환
+                theater: Number(document.getElementById('theater').value),  // 숫자로 변환
+                date: dateTime  // ISO 8601 형식으로 날짜와 시간을 함께 보냄
             };
 
-            console.log("전송할 날짜:", document.getElementById('date').value);
+            console.log("전송할 데이터:", JSON.stringify(scheduleData));
 
             try {
                 const response = await fetch('/schedule', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'  // JSON 데이터로 전송
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify(scheduleData)  // 데이터를 JSON으로 변환하여 전송
+                    body: JSON.stringify(scheduleData)
                 });
 
                 if (response.ok) {
-                    const result = await response.json();
                     alert('영화 상영 일정이 추가되었습니다!');
-                    console.log("서버 응답:", result);
+                    loadScheduleList();  // 새 스케줄 추가 후 리스트 다시 로드
                 } else {
                     const errorMessage = await response.text();
                     console.error('Error:', errorMessage);
                     alert('영화 일정 추가에 실패했습니다.');
                 }
             } catch (error) {
-                // 네트워크 오류 처리
                 console.error('Error:', error);
                 alert('서버와의 통신 중 오류가 발생했습니다.');
             }
         }
+
+        // 페이지가 로드될 때 스케줄 리스트를 로드
+        window.onload = function() {
+            loadScheduleList();  // 스케줄 리스트 불러오기
+        }
     </script>
 </head>
 <body>
-<h1>영화 상영 일정 추가</h1>
+<h1>영화 상영 일정 관리</h1>
 
+<h2>영화 상영 일정 추가</h2>
 <form id="scheduleForm" onsubmit="submitScheduleForm(event)">
     <label for="movieId">영화 ID:</label>
     <input type="number" id="movieId" name="movieId" required><br>
@@ -60,7 +101,15 @@
     <label for="date">상영 날짜:</label>
     <input type="date" id="date" name="date" required><br>
 
+    <label for="time">상영 시간:</label>
+    <input type="time" id="time" name="time" required><br>
+
     <button type="submit">추가</button>
 </form>
+
+<h2>스케줄 리스트</h2>
+<ul id="scheduleList">
+    <!-- 스케줄 데이터가 여기에 표시됩니다. -->
+</ul>
 </body>
 </html>
