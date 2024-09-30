@@ -10,5 +10,10 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
     List<Schedule> findByCinemaId(Long cinemaId);
 
-    
+    default List<ScheduleResDTO> findAllSchedules() {
+        return findAll().stream()
+                .map(ScheduleResDTO::new)
+                .toList();
+    }
+
 }

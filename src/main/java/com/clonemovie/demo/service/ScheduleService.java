@@ -1,6 +1,7 @@
 package com.clonemovie.demo.service;
 
 import com.clonemovie.demo.DTO.ScheduleDTO;
+import com.clonemovie.demo.DTO.ScheduleResDTO;
 import com.clonemovie.demo.domain.Movie;
 import com.clonemovie.demo.domain.Schedule;
 import com.clonemovie.demo.repository.MovieRepository;
@@ -41,6 +42,9 @@ public class ScheduleService {
         return scheduleRepository.findByCinemaId(cinema_id);
     }
 
+    public List<ScheduleResDTO> findAllSchedules() {
+        return scheduleRepository.findAllSchedules();
+    }
 
     @Transactional
     public void deleteSchedule(Long id) {

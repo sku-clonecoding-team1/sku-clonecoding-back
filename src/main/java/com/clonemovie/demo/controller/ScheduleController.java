@@ -1,6 +1,7 @@
 package com.clonemovie.demo.controller;
 
 import com.clonemovie.demo.DTO.ScheduleDTO;
+import com.clonemovie.demo.DTO.ScheduleResDTO;
 import com.clonemovie.demo.domain.Schedule;
 import com.clonemovie.demo.service.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,11 +29,11 @@ public class ScheduleController {
         return ResponseEntity.ok(schedule);
     }
 
-    @Operation(summary = "Schedule 테이블()", description = "", tags = "schedule",
+    @Operation(summary = "Schedule 테이블(id, movieId, movieTitle, cinemaName, theater, date)", description = "", tags = "schedule",
             responses = {@ApiResponse(responseCode = "200", description = "db에 있는 정보 조회")})
     @GetMapping("/schedulelist")
-    public ResponseEntity<List<Schedule>> getSchedules() {
-        List<Schedule> schedules = scheduleService.findAll();
+    public ResponseEntity<List<ScheduleResDTO>> getSchedules() {
+        List<ScheduleResDTO> schedules = scheduleService.findAllSchedules();
         return ResponseEntity.ok(schedules);
     }
 }
