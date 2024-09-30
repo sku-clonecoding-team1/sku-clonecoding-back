@@ -1,6 +1,7 @@
 package com.clonemovie.demo.service;
 
 import com.clonemovie.demo.domain.Member;
+import com.clonemovie.demo.exception.InvalidIdorPassword;
 import com.clonemovie.demo.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,15 +30,17 @@ public class MemberService {
         return memberRepository.findAll();
     }
 
+    @Transactional
     public void deleteMemberById(Long id) {
         memberRepository.deleteById(id);
     }
 
+    @Transactional
     public String login(String userId, String password) {
         Member member = memberRepository.findByUserId(userId);
         if (member != null && member.checkPassword(password)) {
             return jwtUtility.generateToken(member.getUserId());
         }
-        return null;        // 예외처리 해야함
+        throw new InvalidIdorPassword();
     }
 }
