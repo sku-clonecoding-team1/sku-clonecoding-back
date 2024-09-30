@@ -4,6 +4,7 @@ import com.clonemovie.demo.DTO.ScheduleDTO;
 import com.clonemovie.demo.DTO.ScheduleResDTO;
 import com.clonemovie.demo.domain.Movie;
 import com.clonemovie.demo.domain.Schedule;
+import com.clonemovie.demo.exception.InvalidValueException;
 import com.clonemovie.demo.repository.MovieRepository;
 import com.clonemovie.demo.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class ScheduleService {
 
     @Transactional
     public Schedule addSchedule(ScheduleDTO request) {
-        Movie movie = movieRepository.findById(request.getMovieId()).orElse(null);
+        Movie movie = movieRepository.findById(request.getMovieId()).orElseThrow(InvalidValueException::new);
         Schedule schedule = new Schedule(movie, request.getCinemaId(), request.getTheater(), request.getDate());
         return scheduleRepository.save(schedule);
     }
