@@ -11,4 +11,9 @@ public class AdminController {
     public String scheduleList(Model model) {
         return "index";
     }
+
+    @GetMapping("/reserve")
+    public String reserveList(Model model) {
+        return "reserve";
+    }
 }
