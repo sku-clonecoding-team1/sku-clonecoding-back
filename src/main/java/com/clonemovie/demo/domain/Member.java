@@ -26,7 +26,8 @@ public class Member {
     @Setter
     private String nickName;
     private String eMail;
-    private String address;
+    private String phoneNumber;
+    private String birthDay;
 
 
     public Member(SignUpDTO.SignUpRequest request) {
@@ -34,7 +35,8 @@ public class Member {
         this.setPassword(request.getPassword());
         this.nickName = request.getNickName();
         this.eMail = request.getEmail();
-        this.address = request.getAddress();
+        this.phoneNumber = request.getPhoneNumber();
+        this.birthDay = request.getBirthDay();
     }
 
 

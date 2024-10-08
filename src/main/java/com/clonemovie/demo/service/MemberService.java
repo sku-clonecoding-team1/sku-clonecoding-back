@@ -19,7 +19,6 @@ public class MemberService {
 
     @Transactional
     public Member saveMember(SignUpDTO.SignUpRequest request) {
-
         Member member = new Member(request);
         return memberRepository.save(member);
     }

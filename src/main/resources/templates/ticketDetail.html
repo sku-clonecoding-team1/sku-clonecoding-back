@@ -12,8 +12,6 @@
 <p>영화관 이름: <span id="cinemaName" th:text="${cinemaName}"></span></p>
 <p>티켓 가격: <span id="ticketPrice" th:text="1"></span></p>
 
-
-
 <!-- 내부적으로 ID 값을 저장하기 위한 hidden 필드 -->
 <input type="hidden" th:value="${movieId}" id="movieId" />
 <input type="hidden" th:value="${cinemaId}" id="cinemaId" />
@@ -37,6 +35,7 @@
         const response = await fetch('/checkSeat', {
             method: 'POST',
             headers: {
+                'Authorization' : 'sadasd',
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
@@ -55,11 +54,7 @@
     function after_payment() {
         const data = {
             seatID: $('#seatID').text(),       // 텍스트 값 가져오기
-            movieName: $('#movieName').text(),
-            cinemaName: $('#cinemaName').text(),
             price: $('#ticketPrice').text(),   // 티켓 가격 가져오기
-            movieId: $('#movieId').val(),      // 숨겨진 필드의 값
-            cinemaId: $('#cinemaId').val()     // 숨겨진 필드의 값
         };
 
         // 결제 로그를 백엔드로 보내기
@@ -70,10 +65,16 @@
             },
             body: JSON.stringify(data),
         })
-            .then(response => response.json())
+            .then(response => {
+                if (response.ok) { // 응답이 200번대인 경우
+                    console.log('결제 로그가 성공적으로 생성되었습니다.');
+                    return response.json(); // JSON 형식으로 응답을 반환
+                } else {
+                    throw new Error('결제 로그 생성 중 오류가 발생했습니다.'); // 오류 발생
+                }
+            })
             .then(result => {
-                console.log('결제 로그가 성공적으로 생성되었습니다: ', result);
-                return result; // 결제 로그 ID 반환
+                console.log(result); // 추가적인 응답 처리
             })
             .catch(error => {
                 console.error('결제 로그 생성 중 오류 발생:', error);

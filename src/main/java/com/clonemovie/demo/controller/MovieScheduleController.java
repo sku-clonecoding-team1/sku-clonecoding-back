@@ -23,7 +23,6 @@ public class MovieScheduleController {
 
     @PostMapping("/addMovieSchedule")
     public ResponseEntity<Schedule> addMovieSchedule(@RequestBody MovieScheduleDTO request){
-        System.out.println(request.getScheduleDate() + "    입니다~~");
 
         try{
             return ResponseEntity.ok(movieScheduleService.addMovieSchedule(request));

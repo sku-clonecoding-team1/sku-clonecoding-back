@@ -9,7 +9,8 @@ public class SignUpDTO {
         private String password;
         private String nickName;
         private String email;
-        private String address;
+        private String phoneNumber;
+        private String birthDay;
     }
 
 }
