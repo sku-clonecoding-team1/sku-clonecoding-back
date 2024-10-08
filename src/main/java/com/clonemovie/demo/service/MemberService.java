@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,8 +21,12 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
-    public Optional<Member> getMemberById(Long id) {
-        return memberRepository.findById(id);
+    public Member findById(Long id) {
+        return memberRepository.findById(id).orElse(null);
+    }
+
+    public Member findByUserId(String userId) {
+        return memberRepository.findByUserId(userId);
     }
 
     public List<Member> getAllUsers() {

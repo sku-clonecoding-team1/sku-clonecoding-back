@@ -36,15 +36,16 @@
                 if (rsp.success) {
                     // 결제 성공 시, 백엔드로 결제 정보 전송
                     $.ajax({
-                        url: "/api/v1/order/payment/" + rsp.imp_uid,  // imp_uid를 백엔드로 전송
+                        url: "/api/v1/order/payment/" + rsp.imp_uid,
                         method: "POST",
-                        data: {
+                        contentType: "application/json",
+                        data: JSON.stringify({
                             scheduleId: scheduleId,
                             memberId: memberId,
                             seatRow: seatRow,
                             seatColumn: seatColumn,
                             merchantUid: merchantUid
-                        },
+                        }),
                         success: function(response) {
                             alert('결제가 성공적으로 처리되었습니다.');
                             console.log(response);

@@ -11,16 +11,25 @@
             IMP.init("imp38112401");
 
             const scheduleId = 1;
-            const memberId = 2;
+            const buyprice = 100;
+            const userId = 'sung2548';
             const seatRow = 5;
             const seatColumn = 7;
+
+            const data = {
+                scheduleId : scheduleId,
+                userId : userId,
+                buyPrice: buyprice,
+                rw: seatRow,
+                col: seatColumn
+            };
 
                 IMP.request_pay({
                     pg : 'kakaopay',
                     pay_method : 'card', //생략 가능
                     merchant_uid: "order_no_0031", // 상점에서 관리하는 주문 번호
                     name : '주문명:결제테스트',
-                    amount : 100,
+                    amount : buyprice,
                     buyer_email : 'iamport@siot.do',
                     buyer_name : '구매자이름',
                     buyer_tel : '010-1234-5678',
@@ -28,16 +37,13 @@
                     buyer_postcode : '123-456'
                 }, function(rsp) {
                     if (rsp.success) {
+                        console.log(JSON.stringify(seatRow, seatColumn, buyprice));
                         // 결제 성공 시, 백엔드로 결제 정보 전송
                         $.ajax({
-                            url: "/api/v1/order/payment/" + rsp.imp_uid,  // imp_uid를 백엔드로 전송
+                            url: "/api/v1/order/payment/" + rsp.imp_uid,
                             method: "POST",
-                            data: {
-                                scheduleId: scheduleId,
-                                memberId: memberId,
-                                seatRow: seatRow,
-                                seatColumn: seatColumn
-                            },
+                            contentType: "application/json",
+                            data: JSON.stringify(data),
                             success: function(response) {
                                 alert('결제가 성공적으로 처리되었습니다.');
                                 console.log(response);
@@ -48,7 +54,7 @@
                             }
                         });
                     } else {
-                        alert("결제에 실패하였습니다. 에러내용: " + rsp.error_msg);
+                        alert("결제에 실패하였습니다. 에러내용: " + rsp);
                         console.log(rsp);
                     }
                 });
