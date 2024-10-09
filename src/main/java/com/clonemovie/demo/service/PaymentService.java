@@ -19,9 +19,9 @@ public class PaymentService {
 
     public boolean getPaymentLog(PaymentLogDTO request){
         String[] tmp = request.getSeatID().split("-");
-        Long scheduleId= Long.parseLong(tmp[1]);
-        Long seatRow = Long.parseLong(tmp[2]);
-        Long seatCol = Long.parseLong(tmp[3]);
+        Long scheduleId= (Long) Long.parseLong(tmp[1]);
+        Long seatRow = (Long) Long.parseLong(tmp[2]);
+        Long seatCol = (Long) Long.parseLong(tmp[3]);
 
         return paymentRepository.existsByScheduleIdAndSeatRowAndSeatCol(scheduleId, seatRow, seatCol);
 
@@ -31,9 +31,9 @@ public class PaymentService {
     @Transactional
     public PaymentLog savePaymentLog(PaymentLogDTO request) {
         String[] tmp = request.getSeatID().split("-");
-        Long scheduleId= Long.parseLong(tmp[1]);
-        Long seatRow = Long.parseLong(tmp[2]);
-        Long seatCol = Long.parseLong(tmp[3]);
+        Long scheduleId= (Long) Long.parseLong(tmp[1]);
+        Long seatRow = (Long) Long.parseLong(tmp[2]);
+        Long seatCol = (Long) Long.parseLong(tmp[3]);
 
         Schedule schedule = movieScheduleService.findMocieSchedule(scheduleId);
 

@@ -1,6 +1,7 @@
 package com.clonemovie.demo.controller;
 
 import com.clonemovie.demo.DTO.PaymentLogDTO;
+import com.clonemovie.demo.Exception.InvalidMember;
 import com.clonemovie.demo.domain.Member;
 import com.clonemovie.demo.domain.PaymentLog;
 import com.clonemovie.demo.service.MemberService;
@@ -23,8 +24,11 @@ public class PaymentController {
     @PostMapping("/checkSeat")
     public boolean checkSeat(@RequestHeader("Authorization") String bearerToken, @RequestBody PaymentLogDTO request) {
         // 일단 헤더에서 꺼내긴 했는데 로그인 기능이 있어야 사용가능
-        //String token = bearerToken.replace("Bearer ", "");
-        //Member member = memberService.tokenToMember(token).get();
+        String token = bearerToken.replace("Bearer ", "");
+        Member member = memberService.tokenToMember(token).get();
+        if (member == null) {
+            throw new InvalidMember();
+        }
         return paymentService.getPaymentLog(request);
     }
 
