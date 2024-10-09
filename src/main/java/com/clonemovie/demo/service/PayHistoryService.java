@@ -21,17 +21,20 @@ public class PayHistoryService {
     @Transactional
     public PayHistory processPayment(PayHistoryDTO request) {
         System.out.println("Payment request received: " + request);
+        System.out.println("ScheduleId: " + request.getScheduleId());
+        System.out.println("MemberId: " + request.getMemberId());
+        System.out.println("BuyPrice: " + request.getBuyPrice());
+        System.out.println("Row: " + request.getRw());
+        System.out.println("Column: " + request.getCol());
 
         Schedule schedule = scheduleService.findById(request.getScheduleId());
         Member member = memberService.findById(request.getMemberId());
 
-        PayHistory payHistory = new PayHistory(schedule, member, request.getBuyPrice(), request.getRw(), request.getCol());
-
-        return payHistoryRepository.save(payHistory);
+        return payHistoryRepository.save(new PayHistory(schedule, member, request.getBuyPrice(), request.getRw(), request.getCol()));
     }
 
-    public List<PayHistory> paymentList(String userId) {
-        Member member = memberService.findByUserId(userId);
+    public List<PayHistory> paymentList(String token) {
+        Member member = memberService.tokentoMember(token);
 
         return payHistoryRepository.findByMemberId_UserId(member.getUserId());
     }

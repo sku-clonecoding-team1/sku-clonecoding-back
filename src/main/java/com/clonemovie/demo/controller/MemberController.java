@@ -1,6 +1,7 @@
 package com.clonemovie.demo.controller;
 
 import com.clonemovie.demo.DTO.LoginDTO;
+import com.clonemovie.demo.DTO.LoginDTO.*;
 import com.clonemovie.demo.DTO.RegisterDTO.*;
 import com.clonemovie.demo.domain.Member;
 import com.clonemovie.demo.service.MemberService;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,7 +33,7 @@ public class MemberController {
              responses = {@ApiResponse(responseCode = "200", description = "로그인 성공 후 토큰 반환"),
                          @ApiResponse(responseCode = "400", description = "아이디 또는 비밀번호가 틀렸습니다.")})
     @PostMapping("/member/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO.LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
         String token = memberService.login(request.getUserId(), request.getPassword());
         return ResponseEntity.ok(token);
     }

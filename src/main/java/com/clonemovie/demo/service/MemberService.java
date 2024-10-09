@@ -21,6 +21,15 @@ public class MemberService {
         return memberRepository.save(member);
     }
 
+    public Member tokentoMember(String token) {
+        Member member = memberRepository.findByUserId(jwtUtility.validateToken(token).getSubject());
+
+        if (member == null) {
+            throw new InvalidIdorPassword();
+        }
+        return member;
+    }
+
     public Member findById(Long id) {
         return memberRepository.findById(id).orElse(null);
     }

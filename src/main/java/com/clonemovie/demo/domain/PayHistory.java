@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor
+@Table(name = "pay_history")
 public class PayHistory {
     @Id
     @GeneratedValue
