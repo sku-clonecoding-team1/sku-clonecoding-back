@@ -72,4 +72,12 @@ public class PaymentController {
 
         return ResponseEntity.ok(payhistory);
     }
+
+    @Operation(summary = "db에 저장된 예약 정보 조회", description = "", tags = "pay",
+            responses = {@ApiResponse(responseCode = "200", description = "모든 결제 내역 조회")})
+    public ResponseEntity<List<PayHistory>> alltheList() {
+        List<PayHistory> payhistory = payHistoryService.allthePaymentList();
+
+        return ResponseEntity.ok(payhistory);
+    }
 }

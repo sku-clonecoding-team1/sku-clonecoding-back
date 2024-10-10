@@ -38,4 +38,9 @@ public class PayHistoryService {
 
         return payHistoryRepository.findByMemberId_UserId(member.getUserId());
     }
+
+    public List<PayHistory> allthePaymentList() {
+
+        return payHistoryRepository.findAll();
+    }
 }
